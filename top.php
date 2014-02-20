@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Sample Form One</title>
+<title>Sample Form Two</title>
 <meta charset="utf-8">
 <meta name="author" content="Robert M. Erickson">
 <meta name="description" content="Stpes to creating a form">
@@ -15,11 +15,36 @@
 <link rel="stylesheet" href="style.css" type="text/css" media="screen">
 
 <?php
-// parse the url into htmlentites to remove any suspicous vales that someone
-// may try to pass in. htmlentites helps avoid security issues
-// break the url up into an array, then pull out just the filename
+// %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^% 
+// 
+//  PATH SETUP
+//
+//  $domain = "https://www.uvm.edu" or http://www.uvm.edu;
+
+if($_SERVER['HTTPS']) {
+    $domain = "https://";
+}else{
+    $domain = "http://";
+}
+
+$server = htmlentities($_SERVER['SERVER_NAME'], ENT_QUOTES, "UTF-8");
+
+$domain .= $server;
+
 $phpSelf = htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES, "UTF-8");
+
 $path_parts = pathinfo($phpSelf);
+
+$basePath = $domain . $path_parts['dirname'] . "/";
+
+if ($debug){
+    print "<p>Domain". $domain;
+    print "<p>php Self". $phpSelf;
+    print "<p>basePath". $basePath;
+    print "<p>Path Parts<pre>";
+    print_r($path_parts);
+    print "</pre>";
+}
 
 ?>	
 
