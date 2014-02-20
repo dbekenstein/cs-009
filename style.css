@@ -1,0 +1,90 @@
+#main{
+    margin: auto;
+    text-align: left;
+    width: 600px;
+}
+
+fieldset{
+    clear: both;
+    border: 1px solid #00498e;
+    
+}
+fieldset.buttons{
+    border: none;
+}
+fieldset.contact{
+    float: left;
+}
+
+fieldset.contact label{
+    display: block;
+    text-align: right
+}
+
+fieldset.contact input{
+    width: 15em;    
+}
+
+fieldset.wrapper {
+    border: 0;
+    margin: auto;
+}
+
+fieldset.wrapper legend {
+    color: #00498e;
+    font-weight: bold; 
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+fieldset.wrapper > legend {
+    /* i only want the first legend ie if it follows the class wrapper */
+    font-size: 2em; 
+}
+
+
+/* minor data validation, we would still need to use php to be certain */
+
+fieldset.contact input:valid{
+    border: medium solid green;
+}
+
+fieldset.contact input:invalid{
+    border: medium solid red;
+}
+fieldset.contact input.mistake:valid{
+    border: medium solid red;
+}
+
+/***********************************************************************/
+
+label {
+    color: #005cb3;
+    font-weight: bold;
+    font-size: .9em; 
+    display: block;
+}
+
+.required {
+    font-weight:bolder;
+    font-style:italic;
+}
+
+label.required:before {
+    content: "* ";
+}
+
+span.required:after {
+    color: #000;
+    content: " Required *";
+}
+
+.mistake {
+    color: #fff;
+    background-color:#800;
+    border: thin solid #000;
+}
+
+#errors ol li{
+    color: #ff66ff;
+}
