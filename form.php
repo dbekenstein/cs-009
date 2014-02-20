@@ -31,8 +31,112 @@ $mountain="Haystack Mountain";
 // See top.php for variable declartions
 $yourURL =  $domain . $phpSelf;
 
+
+//%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
+// 
+// This if statement is how we can check to see if the form has been submitted
+// 
+// NO CHANGES: but VERFIY your forms submit button is named btnSubmit
+
+if (isset($_POST["btnSubmit"])){
+
+    //******************************************************************
+    // is the refeering web page the one we want or is someone trying 
+    // to hack in. this is not 100% reliable but ok for our purposes   */
+    //
+    // Security check block one, no changes needed
+    if(!securityCheck()){
+        $msg= "<p>Sorry you cannot access this page. ";
+        $msg.= "Security breach detected and reported</p>";
+        die($msg);
+    }
+    
+    //************************************************************
+    // we need to make sure there is no malicious code so we do 
+    // this for each element we pass in. Be sure your names match
+    // your objects
+    // 
+    // Security check block two
+    // 
+    // What this does is take things like <script> and replace it
+    // with &lt;script&gt; so that hackers cannot send malicous 
+    // code to you.
+    //   
+    // You will notice i have set radio buttons, list box and the 
+    // check boxes just in case someone tries something funky.
+    // 
+    // CHANGES NEEDED: match PHP variables with form elements
+    // 
+    // */
+    
+    $firstName = htmlentities($_POST["txtFirstName"],ENT_QUOTES,"UTF-8");
+    $lastName = htmlentities($_POST["txtLastName"],ENT_QUOTES,"UTF-8");
+    $email = htmlentities($_POST["txtEmail"],ENT_QUOTES,"UTF-8");
+    
+    if(isset($_POST["chkHiking"])) {
+        $hiking  = true;
+    }else{
+        $hiking  = false;
+    }
+    
+    if(isset($_POST["chkKayaking"])) {
+        $kayaking  = true;
+    }else{
+        $kayaking  = false;
+    }
+    
+    $gender = htmlentities($_POST["radGender"],ENT_QUOTES,"UTF-8");
+    
+    $mountain = htmlentities($_POST["lstMountains"],ENT_QUOTES,"UTF-8");
+     
+    
+    //************************************************************
+    //
+    //  In this block I am just putting all the forms information
+    //  into a variable so I can print it out on the screen
+    //
+    //  the substr function removes the 3 letter prefix
+    //  preg_split('/(?=[A-Z])/',$str) add a space for the camel case
+    //  see: http://stackoverflow.com/questions/4519739/split-camelcase-word-into-words-with-php-preg-match-regular-expression
+    //
+    //  CHANGES: first message line. foreach no changes needed
+    
+    $message  = '<h2>Your information.</h2>';
+    
+    foreach ($_POST as $key => $value){
+        
+        $message .= "<p>"; 
+        
+        $camelCase = preg_split('/(?=[A-Z])/',substr($key,3));
+        
+        foreach ($camelCase as $one){
+            $message .= $one . " ";
+        }
+        $message .= " = " . $value . "</p>";
+    }
+    
+} // ends if form was submitted. We will be adding more information ABOVE this
+
 ?>
 <article id="main">
+    
+<? 
+//*****************************************************************************
+//
+//  In this block  display the information that was submitted and do not 
+//  display the form.
+//  
+//  NO CHANGES NEEDED
+//
+if (isset($_POST["btnSubmit"])){  // closing of if marked with: end body submit
+    echo $message;
+} else {
+
+// display the form, notice the closing } bracket at the end just before the 
+// closing body tag
+
+?>
+   
 <form action="<? print $phpSelf; ?>" 
       method="post"
       id="frmRegister">
@@ -112,7 +216,14 @@ $yourURL =  $domain . $phpSelf;
 </fieldset>
 </fieldset>
 </form>
-    
-<?php include "footer.php"; ?>
+  
+<?php 
+} // end body submit NO CHANGE NEEDED
+if ($debug) print "<p>END OF PROCESSING</p>";
+
+print "</article>";
+include "footer.php"; 
+
+?>
 </body>
 </html>

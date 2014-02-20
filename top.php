@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Sample Form Two</title>
+<title>Sample Form Three</title>
 <meta charset="utf-8">
 <meta name="author" content="Robert M. Erickson">
 <meta name="description" content="Stpes to creating a form">
@@ -45,6 +45,12 @@ if ($debug){
     print_r($path_parts);
     print "</pre>";
 }
+
+// %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^% 
+// 
+//  inlcude all libraries
+//  
+require_once('lib/security.php');
 
 ?>	
 
