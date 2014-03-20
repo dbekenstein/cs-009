@@ -7,9 +7,9 @@ function securityCheck($form = "") {
     global $yourURL;
 
     $status = true; // start off thinking everything is good until a test fails
-    $fromPage = getenv("http_referer"); 
+    $fromPage = $server = htmlentities($_SERVER['HTTP_REFERER'], ENT_QUOTES, "UTF-8");
 
-    if ($debug) print "<p>From: " . $fromPage . " should match yourUrl: " . $yourURL;
+    if ($debug) print "<p>From: " . $fromPage . " should match your Url: " . $yourURL;
 
     if($fromPage != $yourURL){
         $status=false;
