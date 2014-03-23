@@ -1,4 +1,4 @@
-<? 
+<?php
 include ("top.php");
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
@@ -31,6 +31,10 @@ $mountain="Haystack Mountain";
 // See top.php for variable declartions
 $yourURL =  $domain . $phpSelf;
 
+//initialize flags for errors, one for each item
+$firstNameERROR = false;
+$lastNameERROR = false;
+$emailERROR = false;
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 // 
@@ -51,6 +55,10 @@ if (isset($_POST["btnSubmit"])){
         die($msg);
     }
     
+    //check for errors
+    include ("lib/validation_functions.php"); // you need to create this file (see link in lecture notes)
+    $errorMsg=array();
+     
     //************************************************************
     // we need to make sure there is no malicious code so we do 
     // this for each element we pass in. Be sure your names match
@@ -88,32 +96,71 @@ if (isset($_POST["btnSubmit"])){
     $gender = htmlentities($_POST["radGender"],ENT_QUOTES,"UTF-8");
     
     $mountain = htmlentities($_POST["lstMountains"],ENT_QUOTES,"UTF-8");
+    
+    
+    // Test first name for empty and valid characters
+    // YOU NEED TO DO THIS
+    
+    
+    
+    // Test last name for empty and valid characters
+    // YOU NEED TO DO THIS
+   
+    
+   // TODO: get form set up to validate email address instead of first name
+    
+    // test email for empty and valid format
+    
+    // NOTE: i removed required attribute and set this input type=text instead 
+    // of type=email so i can check my php code.
+     if($email==""){
+        $errorMsg[]="Please enter your email address";
+        $emailERROR = true;
+     }elseif(!verifyEmail){ 
+        $errorMsg[]="Your email address appears to be incorrect.";
+        $emailERROR = true;
+     }
+
+     // Test anything else
+    // YOU NEED TO DO THIS
+ 
      
-    
-    //************************************************************
-    //
-    //  In this block I am just putting all the forms information
-    //  into a variable so I can print it out on the screen
-    //
-    //  the substr function removes the 3 letter prefix
-    //  preg_split('/(?=[A-Z])/',$str) add a space for the camel case
-    //  see: http://stackoverflow.com/questions/4519739/split-camelcase-word-into-words-with-php-preg-match-regular-expression
-    //
-    //  CHANGES: first message line. foreach no changes needed
-    
-    $message  = '<h2>Your information.</h2>';
-    
-    foreach ($_POST as $key => $value){
-        
-        $message .= "<p>"; 
-        
-        $camelCase = preg_split('/(?=[A-Z])/',substr($key,3));
-        
-        foreach ($camelCase as $one){
-            $message .= $one . " ";
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // 
+    // our form data is valid at this point so we can process the data
+    if(!$errorMsg){	
+        if ($debug) print "<p>Form is valid</p>";
+
+        //####################################################################
+        // Begin processing data
+
+
+
+        //************************************************************
+        //
+        //  In this block I am just putting all the forms information
+        //  into a variable so I can print it out on the screen
+        //
+        //  the substr function removes the 3 letter prefix
+        //  preg_split('/(?=[A-Z])/',$str) add a space for the camel case
+        //  see: http://stackoverflow.com/questions/4519739/split-camelcase-word-into-words-with-php-preg-match-regular-expression
+        //
+        //  CHANGES: first message line. foreach no changes needed
+
+        $message  = '<h2>Your information.</h2>';
+
+        foreach ($_POST as $key => $value){
+
+            $message .= "<p>"; 
+
+            $camelCase = preg_split('/(?=[A-Z])/',substr($key,3));
+
+            foreach ($camelCase as $one){
+                $message .= $one . " ";
+            }
+            $message .= " = " . htmlentities($value,ENT_QUOTES,"UTF-8") . "</p>";
         }
-        $message .= " = " . $value . "</p>";
-    }
+    } // ends form is valid
     
 } // ends if form was submitted. We will be adding more information ABOVE this
 
@@ -128,12 +175,29 @@ if (isset($_POST["btnSubmit"])){
 //  
 //  NO CHANGES NEEDED
 //
-if (isset($_POST["btnSubmit"])){  // closing of if marked with: end body submit
+if (isset($_POST["btnSubmit"]) AND empty($errorMsg)){  // closing of if marked with: end body submit
     echo $message;
 } else {
 
 // display the form, notice the closing } bracket at the end just before the 
 // closing body tag
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//
+// Here we display any errors that were on the form
+//
+    
+print '<div id="errors">';
+
+if($errorMsg){
+    echo "<ol>\n";
+    foreach($errorMsg as $err){
+        echo "<li>" . $err . "</li>\n";
+    }
+    echo "</ol>\n";
+} 
+
+print '</div>';
 
 ?>
    
@@ -148,7 +212,7 @@ if (isset($_POST["btnSubmit"])){  // closing of if marked with: end body submit
 <fieldset class="intro">
 <legend>Please complete the following form</legend>
 
-<fieldset class="contact">
+<fieldset class="contact"> 
     <legend>Contact Information</legend>
     
 	<label for="txtFirstName" class="required">First Name
@@ -168,8 +232,9 @@ if (isset($_POST["btnSubmit"])){  // closing of if marked with: end body submit
 	<label for="txtEmail" class="required">Email
   	<input type="email" id="txtEmail" name="txtEmail" 
                value="<?php echo $email; ?>"
-               tabindex="120" maxlength="45" placeholder="enter a valid email address" 
-               onfocus="this.select()" required >
+               tabindex="120" maxlength="45" placeholder="enter a valid email address"
+               <?php if($emailERROR) echo 'class="mistake"'; ?>
+               onfocus="this.select()" >
         </label>
 </fieldset>					
 

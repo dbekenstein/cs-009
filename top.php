@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Sample Form Three</title>
+<title>Sample Form</title>
 <meta charset="utf-8">
 <meta name="author" content="Robert M. Erickson">
 <meta name="description" content="Stpes to creating a form">
