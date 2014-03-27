@@ -58,7 +58,12 @@ if (isset($_POST["btnSubmit"])){
     //check for errors
     include ("lib/validation_functions.php"); // you need to create this file (see link in lecture notes)
     $errorMsg=array();
-     
+    //#######################################################
+    // we are going to put our forms data into this array so we can save it
+    // NO CHANGES NEEDED
+    $dataRecord=array();  
+    
+    
     //************************************************************
     // we need to make sure there is no malicious code so we do 
     // this for each element we pass in. Be sure your names match
@@ -98,19 +103,17 @@ if (isset($_POST["btnSubmit"])){
     $mountain = htmlentities($_POST["lstMountains"],ENT_QUOTES,"UTF-8");
     
     
-    // Test first name for empty and valid characters
+    // Test first name for empty and valid characters and save into dataRecord array
     // YOU NEED TO DO THIS
     
     
     
-    // Test last name for empty and valid characters
+    // Test last name for empty and valid characters and save into dataRecord array
     // YOU NEED TO DO THIS
    
     
-   // TODO: get form set up to validate email address instead of first name
-    
-    // test email for empty and valid format
-    
+    // test email for empty and valid format and save into dataRecord array
+    //
     // NOTE: i removed required attribute and set this input type=text instead 
     // of type=email so i can check my php code.
      if($email==""){
@@ -120,8 +123,12 @@ if (isset($_POST["btnSubmit"])){
         $errorMsg[]="Your email address appears to be incorrect.";
         $emailERROR = true;
      }
-
-     // Test anything else
+   
+    // we are going to put our forms data into this array so we can save it
+    $dataRecord[]=$email;
+    
+    
+    // Test anything else and save into dataRecord array
     // YOU NEED TO DO THIS
  
      
@@ -131,9 +138,41 @@ if (isset($_POST["btnSubmit"])){
     if(!$errorMsg){	
         if ($debug) print "<p>Form is valid</p>";
 
-        //####################################################################
+        //########################################################
         // Begin processing data
 
+        //########################################################
+        // Save Forms data to a csv file on the cloud
+
+        // NOTE: When you save the forms information to a file, the file 
+        // permissions can cause problems
+
+        //NOTE: my file is in a folder called data
+
+        // Step one in netbeans create new file, name it formData.csv
+        // Step two delete the contents of this csv file and save it
+        // Step three use fugu or winscp to set the permissions on this
+        //            file to 666 (rw-  for everyone)
+        // Now try your form and see if it saves.
+
+        $fileExt=".csv";
+
+        $myFileName="data/registration";
+
+        $filename = $myFileName . $fileExt;
+
+        if ($debug) print "\n\n<p>filename is " . $filename;
+
+        // now we just open the file for append
+        $file = fopen($filename, 'r');    
+
+        // write the forms informations
+        fputcsv($file, $dataRecord);
+
+        // close the file
+        fclose($file);
+
+        //####################################################################
 
 
         //************************************************************
