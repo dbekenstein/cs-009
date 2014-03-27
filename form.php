@@ -199,6 +199,16 @@ if (isset($_POST["btnSubmit"])){
             }
             $message .= " = " . htmlentities($value,ENT_QUOTES,"UTF-8") . "</p>";
         }
+        
+        //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        //
+        // mail the forms information to the person who filled it out
+        // if you want a copy you need to add yourself to the bcc
+        // in mailMessage.php
+        //
+        include_once('mailMessage.php');
+        $mailed = sendMail($email, $message);
+        
     } // ends form is valid
     
 } // ends if form was submitted. We will be adding more information ABOVE this
@@ -215,6 +225,22 @@ if (isset($_POST["btnSubmit"])){
 //  NO CHANGES NEEDED
 //
 if (isset($_POST["btnSubmit"]) AND empty($errorMsg)){  // closing of if marked with: end body submit
+    //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    print "<h1>Your Request has ";
+
+    if (!$mailed) {
+        echo "not ";
+    }
+    
+    echo "been processed</h1>";
+
+    print "<p>A copy of this message has ";
+    if (!$mailed) {
+        echo "not ";
+    }
+    print "been sent</p>";
+    print "<p>To: " . $email . "</p>";
+    print "<p>Mail Message:</p>";
     echo $message;
 } else {
 
