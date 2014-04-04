@@ -164,7 +164,7 @@ if (isset($_POST["btnSubmit"])){
         if ($debug) print "\n\n<p>filename is " . $filename;
 
         // now we just open the file for append
-        $file = fopen($filename, 'r');    
+        $file = fopen($filename, 'a');    
 
         // write the forms informations
         fputcsv($file, $dataRecord);
