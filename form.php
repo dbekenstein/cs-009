@@ -119,7 +119,7 @@ if (isset($_POST["btnSubmit"])){
      if($email==""){
         $errorMsg[]="Please enter your email address";
         $emailERROR = true;
-     }elseif(!verifyEmail){ 
+     }elseif(!verifyEmail($email)){ 
         $errorMsg[]="Your email address appears to be incorrect.";
         $emailERROR = true;
      }
