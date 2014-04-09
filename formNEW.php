@@ -74,7 +74,7 @@ if (isset($_POST["btnSubmit"])){
     // files must be created and saved in the folder as specified
     
     include ("lib/validation_functions.php");
-    include_once('mailMessage.php');  
+    include_once('lib/mailMessage.php');  
     
     $errorMsg=array(); // holds error messages to display, blank if there are none
     $dataRecord=array();  // array used to hold form values that will be written to a CSV file
@@ -104,7 +104,7 @@ if (isset($_POST["btnSubmit"])){
     if($email==""){
        $errorMsg[]="Please enter your email address";
        $emailERROR = true;
-    }elseif(!verifyEmail){ 
+    }elseif(!verifyEmail($email)){ 
        $errorMsg[]="Your email address appears to be incorrect.";
        $emailERROR = true;
     }
@@ -273,13 +273,17 @@ if($errorMsg){
         <fieldset class="contact"> 
             <legend>Contact Information</legend>
                 <label for="txtEmail" class="required">Email
-                <input type="email" id="txtEmail" name="txtEmail" 
+                <input type="text" id="txtEmail" name="txtEmail" 
                        value="<?php print $email; ?>"
                        tabindex="120" maxlength="45" placeholder="enter a valid email address"
                        <?php if($emailERROR) print 'class="mistake"'; ?>
                        onfocus="this.select()" >
                 </label>
         </fieldset>					
+    </fieldset>
+    <fieldset class="buttons">
+          <legend></legend>				
+          <input type="submit" id="btnSubmit" name="btnSubmit" value="Register" tabindex="900" class="button">
     </fieldset>
 </fieldset>
 </form>

@@ -206,7 +206,7 @@ if (isset($_POST["btnSubmit"])){
         // if you want a copy you need to add yourself to the bcc
         // in mailMessage.php
         //
-        include_once('mailMessage.php');
+        include_once('lib/mailMessage.php');
         $mailed = sendMail($email, $message);
         
     } // ends form is valid
