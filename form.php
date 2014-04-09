@@ -49,7 +49,7 @@ if (isset($_POST["btnSubmit"])){
     // to hack in. this is not 100% reliable but ok for our purposes   */
     //
     // Security check block one, no changes needed
-    if(!securityCheck()){
+    if(!securityCheck(true)){
         $msg= "<p>Sorry you cannot access this page. ";
         $msg.= "Security breach detected and reported</p>";
         die($msg);
